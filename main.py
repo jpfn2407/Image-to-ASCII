@@ -18,23 +18,23 @@ grayscale = {
 
 def to_gray_scale(r, g, b):
     gray_value = int((r + g + b) / 3)
-    if 0 <= gray_value <= 26:
+    if 0 == gray_value:
         return grayscale['0']
-    elif 27 <= gray_value <= 53:
+    elif 1 <= gray_value <= 29:
         return grayscale['1']
-    elif 54 <= gray_value <= 80:
+    elif 30 <= gray_value <= 58:
         return grayscale['2']
-    elif 81 <= gray_value <= 107:
+    elif 59 <= gray_value <= 87:
         return grayscale['3']
-    elif 108 <= gray_value <= 134:
+    elif 88 <= gray_value <= 114:
         return grayscale['4']
-    elif 135 <= gray_value <= 161:
+    elif 115 <= gray_value <= 141:
         return grayscale['5']
-    elif 162 <= gray_value <= 188:
+    elif 142 <= gray_value <= 168:
         return grayscale['6']
-    elif 189 <= gray_value <= 215:
+    elif 169 <= gray_value <= 195:
         return grayscale['7']
-    elif 216 <= gray_value <= 242:
+    elif 196 <= gray_value <= 222:
         return grayscale['8']
     else:
         return grayscale['9']
@@ -45,25 +45,29 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "hi:s:", ["ifile=", "size="])
     except getopt.GetoptError:
-        print
-        'main.py -i <inputfile> '
+        print('main.py -i <inputfile> ')
         sys.exit(2)
-    for opt, arg in opts:
-        if opt == '-h':
-            print('main.py -s <width size> -i <inputfile>')
-            sys.exit()
-        elif opt in ("-s", "--size"):
-            wsize = int(arg)
-        elif opt in ("-i", "--ifile"):
-            image_path = arg
-            get_image(image_path, wsize)
-        else:
-            print('Invalid parameters. Check "py main.py -h" for valid parameters.')
+    if not opts:
+        print('Invalid parameters. Check "py main.py -h" for more information.')
+    else:
+        for opt, arg in opts:
+            print(arg)
+            if opt == '-h':
+                print('main.py -s <output_width_size> -i <inputfile>')
+                sys.exit()
+            elif opt in ("-s", "--size"):
+                wsize = int(arg.strip())
+            elif opt in ("-i", "--ifile"):
+                image_path = arg
+                get_image(image_path, wsize)
+            else:
+                print('Invalid parameters. Check "py main.py -h" for more information.')
+                sys.exit()
 
 
 def get_image(image_path, wsize):
     img = Image.open(image_path)
-    hsize = int((float(img.size[1]) * wsize) / (float(img.size[0]) * 1.33))
+    hsize = int((float(img.size[1]) * wsize) / (float(img.size[0]) * 1.5))
     img = img.resize((wsize, hsize), Image.ANTIALIAS)
     rgb_img = img.convert('RGB')
     for y in range(hsize):
